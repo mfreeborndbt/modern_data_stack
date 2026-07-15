@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-import Tab00WhatIsADataStack from './components/tabs/Tab00WhatIsADataStack'
-import Tab01LegacyStack from './components/tabs/Tab01LegacyStack'
-import Tab02ModernStack from './components/tabs/Tab02ModernStack'
-import Tab03Trends from './components/tabs/Tab03Trends'
-import Tab04AI from './components/tabs/Tab04AI'
+import Tab00Agenda from './components/tabs/Tab00Agenda'
+import Tab01GreatDataOrg from './components/tabs/Tab01GreatDataOrg'
+import Tab02WhatIsADataStack from './components/tabs/Tab02WhatIsADataStack'
+import Tab03LegacyStack from './components/tabs/Tab03LegacyStack'
+import Tab04ModernStack from './components/tabs/Tab04ModernStack'
+import Tab05Trends from './components/tabs/Tab05Trends'
+import Tab06AI from './components/tabs/Tab06AI'
 
 const tabs = [
-  { key: '00', label: '00', title: 'What is a data stack', component: Tab00WhatIsADataStack },
-  { key: '01', label: '01', title: 'The legacy stack', component: Tab01LegacyStack },
-  { key: '02', label: '02', title: 'The modern stack', component: Tab02ModernStack },
-  { key: '03', label: '03', title: 'Trends', component: Tab03Trends, stub: true },
-  { key: '04', label: '04', title: 'AI and the stack', component: Tab04AI, stub: true },
+  { key: '00', label: '00', title: 'Agenda', component: Tab00Agenda },
+  { key: '01', label: '01', title: 'Making A Great Data Org', component: Tab01GreatDataOrg },
+  { key: '02', label: '02', title: 'What Is A Data Stack', component: Tab02WhatIsADataStack },
+  { key: '03', label: '03', title: 'The Legacy Stack', component: Tab03LegacyStack },
+  { key: '04', label: '04', title: 'The Modern Stack', component: Tab04ModernStack },
+  { key: '05', label: '05', title: 'Trends', component: Tab05Trends },
+  { key: '06', label: '06', title: 'AI And The Stack', component: Tab06AI },
 ]
 
 const pageTransition = {
@@ -24,10 +28,14 @@ const pageTransition = {
 export default function App() {
   const [activeTab, setActiveTab] = useState('00')
 
-  // Keyboard navigation
+  // Keyboard navigation: arrows + number keys
   useEffect(() => {
     const handler = (e) => {
+      // Skip if user is typing in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+
       const idx = tabs.findIndex(t => t.key === activeTab)
+
       if (e.key === 'ArrowRight' && idx < tabs.length - 1) {
         e.preventDefault()
         setActiveTab(tabs[idx + 1].key)
@@ -35,6 +43,12 @@ export default function App() {
       if (e.key === 'ArrowLeft' && idx > 0) {
         e.preventDefault()
         setActiveTab(tabs[idx - 1].key)
+      }
+      // Number keys 0-6
+      const num = parseInt(e.key, 10)
+      if (num >= 0 && num < tabs.length) {
+        e.preventDefault()
+        setActiveTab(String(num).padStart(2, '0'))
       }
     }
     window.addEventListener('keydown', handler)
@@ -77,13 +91,11 @@ export default function App() {
                 className={`group flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                   activeTab === tab.key
                     ? 'bg-gray-900 text-white shadow-sm'
-                    : tab.stub
-                    ? 'text-gray-400 hover:text-gray-500 hover:bg-gray-50'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <span className={`font-bold ${
-                  activeTab === tab.key ? 'text-white' : tab.stub ? 'text-gray-300' : 'text-gray-400'
+                  activeTab === tab.key ? 'text-white' : 'text-gray-400'
                 }`}>
                   {tab.label}
                 </span>

@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --color-ingest: #6366f1;
-  --color-store: #3b82f6;
+  --color-sources: #6366f1;
+  --color-storage: #3b82f6;
   --color-transform: #f97316;
-  --color-analyze: #10b981;
+  --color-visualize: #10b981;
   --color-legacy-bg: #1e293b;
   --color-modern-bg: #f8fafc;
 }
