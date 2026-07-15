@@ -153,7 +153,7 @@ const constraints = [
   },
   {
     id: 3,
-    title: 'Centralized - IT As Gatekeeper',
+    title: 'Centralized IT As A Gatekeeper',
     visual: (
       <div className="flex flex-col items-center gap-4">
         <div className="flex items-center gap-6">
@@ -206,8 +206,8 @@ const constraints = [
         <div className="flex items-center justify-center gap-2">
           {[
             { label: 'Sources', color: '#6366f1', highlight: false },
-            { label: 'Extract & Transform', color: '#f97316', highlight: true },
-            { label: 'Load / Store', color: '#3b82f6', highlight: true },
+            { label: 'Extract, Transform, Load', color: '#f97316', highlight: true },
+            { label: 'Store', color: '#3b82f6', highlight: false },
             { label: 'Analyze', color: '#10b981', highlight: false },
           ].map((s, i) => (
             <div key={s.label} className="flex items-center gap-2">

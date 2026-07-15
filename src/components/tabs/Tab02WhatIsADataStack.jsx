@@ -42,7 +42,7 @@ const dataSources = [
     ],
   },
   {
-    name: 'Google Ads', logo: `${BASE}logos/google-ads.png`, bg: '#ffffff',
+    name: 'Google Ads', logo: `${BASE}logos/google-ads.jpg`, bg: '#ffffff',
     tables: [
       { name: 'campaigns', cols: ['id', 'name', 'status', 'budget', 'start_date'] },
       { name: 'ad_groups', cols: ['id', 'campaign_id', 'name', 'cpc_bid', 'status'] },
