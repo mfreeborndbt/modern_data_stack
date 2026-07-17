@@ -15,13 +15,13 @@ const agenda = [
   },
   {
     number: '03',
-    title: 'Legacy Data Stack',
+    title: 'Pitfalls of Legacy Stack',
     desc: 'How companies used to process data',
     color: '#f97316',
   },
   {
     number: '04',
-    title: 'Modern Data Stack',
+    title: 'Benefits of Modern Stack',
     desc: 'How companies have evolved to meet changing and more complex needs',
     color: '#10b981',
   },

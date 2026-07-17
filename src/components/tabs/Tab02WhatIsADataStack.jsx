@@ -1075,7 +1075,7 @@ export default function Tab02WhatIsADataStack() {
                       <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center text-white text-[10px] font-bold">OL</div>
                       <div>
                         <p className="font-bold text-gray-900 text-sm">OLTP</p>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-wider">Analytics databases</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wider">Operational databases</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-2">
