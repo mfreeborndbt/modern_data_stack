@@ -15,7 +15,7 @@ const tabs = [
   { key: '02', label: '02', title: 'What Is A Data Stack', component: Tab02WhatIsADataStack },
   { key: '03', label: '03', title: 'Pitfalls of Legacy Stack', component: Tab03LegacyStack },
   { key: '04', label: '04', title: 'Benefits of Modern Stack', component: Tab04ModernStack },
-  { key: '05', label: '05', title: 'Trends', component: Tab05Trends },
+  { key: '05', label: '05', title: 'Emerging Trends', component: Tab05Trends },
   { key: '06', label: '06', title: 'AI And The Stack', component: Tab06AI },
 ]
 
@@ -99,7 +99,7 @@ export default function App() {
                 }`}>
                   {tab.label}
                 </span>
-                <span className="hidden md:inline">{tab.title}</span>
+                <span className="hidden md:inline whitespace-nowrap">{tab.title}</span>
               </button>
             ))}
           </div>

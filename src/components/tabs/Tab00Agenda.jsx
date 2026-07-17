@@ -27,7 +27,7 @@ const agenda = [
   },
   {
     number: '05',
-    title: 'Trends',
+    title: 'Emerging Trends',
     desc: 'How the modern data stack is changing',
     color: '#8b5cf6',
   },
