@@ -13,8 +13,8 @@ const tabs = [
   { key: '00', label: '00', title: 'Agenda', component: Tab00Agenda },
   { key: '01', label: '01', title: 'Making A Great Data Org', component: Tab01GreatDataOrg },
   { key: '02', label: '02', title: 'What Is A Data Stack', component: Tab02WhatIsADataStack },
-  { key: '03', label: '03', title: 'The Legacy Stack', component: Tab03LegacyStack },
-  { key: '04', label: '04', title: 'The Modern Stack', component: Tab04ModernStack },
+  { key: '03', label: '03', title: 'Pitfalls of Legacy Stack', component: Tab03LegacyStack },
+  { key: '04', label: '04', title: 'Benefits of Modern Stack', component: Tab04ModernStack },
   { key: '05', label: '05', title: 'Trends', component: Tab05Trends },
   { key: '06', label: '06', title: 'AI And The Stack', component: Tab06AI },
 ]
