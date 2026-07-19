@@ -9,13 +9,13 @@ const agenda = [
   },
   {
     number: '02',
-    title: 'What Is A Data Stack',
+    title: "What's A Data Stack",
     desc: 'The 4 step architecture',
     color: '#3b82f6',
   },
   {
     number: '03',
-    title: 'Pitfalls of Legacy Stack',
+    title: 'Limits of Legacy Stack',
     desc: 'How companies used to process data',
     color: '#f97316',
   },
@@ -27,7 +27,7 @@ const agenda = [
   },
   {
     number: '05',
-    title: 'Emerging Trends',
+    title: 'Trends',
     desc: 'How the modern data stack is changing',
     color: '#8b5cf6',
   },
