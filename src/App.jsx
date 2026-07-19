@@ -16,7 +16,7 @@ const tabs = [
   { key: '03', label: '03', title: 'Pitfalls of Legacy Stack', component: Tab03LegacyStack },
   { key: '04', label: '04', title: 'Benefits of Modern Stack', component: Tab04ModernStack },
   { key: '05', label: '05', title: 'Emerging Trends', component: Tab05Trends },
-  { key: '06', label: '06', title: 'AI And The Stack', component: Tab06AI },
+  { key: '06', label: '06', title: 'AI', component: Tab06AI },
 ]
 
 const pageTransition = {
@@ -83,12 +83,12 @@ export default function App() {
       {/* Tab navigation */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
         <div className="section-container py-2">
-          <div className="flex gap-1 justify-center">
+          <div className="flex gap-1 justify-center overflow-x-auto">
             {tabs.map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`group flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                className={`group flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap shrink-0 ${
                   activeTab === tab.key
                     ? 'bg-gray-900 text-white shadow-sm'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'

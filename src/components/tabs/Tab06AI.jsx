@@ -151,34 +151,20 @@ function SkillsSimulation() {
   const [running, setRunning] = useState(false)
   const [step, setStep] = useState(0)
 
-  const withoutSteps = [
-    { type: 'thinking', text: 'Thinking...' },
-    { type: 'output', text: 'models:\n  - name: stg_orders\n    columns:\n      - name: ship_mode\n        tests:\n          - accepted_values:\n              values: [\'First Class\']' },
-    { type: 'issue', text: 'Only one value. Missing Standard Class, Second Class, Same Day. No description or config.' },
-  ]
-
-  const withSteps = [
-    { type: 'skill', text: 'Loading skill: dbt-add-unit-test' },
-    { type: 'context', text: 'Reading schema, pulling distinct values from warehouse...' },
-    { type: 'output', text: 'models:\n  - name: stg_orders\n    columns:\n      - name: ship_mode\n        description: "Shipping method"\n        tests:\n          - accepted_values:\n              values:\n                - First Class\n                - Second Class\n                - Standard Class\n                - Same Day' },
-    { type: 'success', text: 'All 4 values included. Description added. Follows project conventions.' },
-  ]
-
-  const steps = mode === 'without' ? withoutSteps : withSteps
-
   const runSim = () => {
-    setStep(0)
+    setStep(1)
     setRunning(true)
-    let i = 0
+    let i = 1
+    const sc = mode === 'without' ? 3 : 6
+    const d = mode === 'without' ? 1300 : 1200
     const interval = setInterval(() => {
       i++
-      if (i >= steps.length) {
-        clearInterval(interval)
-        setRunning(false)
-      }
       setStep(i)
-    }, 900)
+      if (i >= sc) { clearInterval(interval); setRunning(false) }
+    }, d)
   }
+
+  const cardAnim = { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4 } }
 
   return (
     <div className="mt-5 space-y-4">
@@ -198,62 +184,154 @@ function SkillsSimulation() {
       </div>
 
       {/* Prompt */}
-      <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
-        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Prompt</p>
-        <p className="text-sm font-mono text-gray-700">"Write an accepted_values test for ship_mode."</p>
+      <div className="bg-slate-800 rounded-xl border border-slate-700 p-4">
+        <p className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Prompt</p>
+        <p className="text-sm font-mono text-slate-200">"Write an accepted_values test for ship_mode."</p>
       </div>
 
       {/* Output area */}
-      <div className="bg-slate-900 rounded-xl p-4 min-h-[140px]">
-        {step === 0 && !running && (
+      {step === 0 ? (
+        <div className="bg-slate-900 rounded-xl p-4 min-h-[140px]">
           <p className="text-xs text-slate-500 text-center pt-8">Press "Run simulation" to compare</p>
-        )}
-        <AnimatePresence>
-          {steps.slice(0, step).map((s, i) => (
-            <motion.div
-              key={`${mode}-${i}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mb-3"
-            >
-              {s.type === 'thinking' && (
-                <div className="flex items-center gap-2">
-                  <motion.div className="w-2 h-2 rounded-full bg-amber-400" animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1, repeat: Infinity }} />
-                  <span className="text-xs text-amber-300 font-mono">{s.text}</span>
-                </div>
+        </div>
+      ) : (
+        <div className="bg-slate-900 rounded-xl p-4 space-y-3">
+          {mode === 'without' ? (
+            <>
+              {/* Step 1: YAML structure */}
+              {step >= 1 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-slate-700 bg-slate-800 p-4">
+                  <p className="text-sm font-semibold text-slate-200 mb-3">Writes an accepted_values test</p>
+                  <div className="text-xs font-mono leading-relaxed text-slate-400">
+                    <div><span className="text-purple-400">columns</span>:</div>
+                    <div className="pl-2">- <span className="text-purple-400">name</span>: <span className="text-blue-400">ship_mode</span></div>
+                    <div className="pl-4"><span className="text-purple-400">data_tests</span>:</div>
+                    <div className="pl-4">- <span className="text-purple-400">accepted_values</span>:</div>
+                  </div>
+                  {/* Step 2: Guessed values appear as second beat */}
+                  {step >= 2 && (
+                    <motion.div {...cardAnim} className="mt-1 bg-amber-900/30 border border-amber-700/50 rounded-lg p-2.5">
+                      <div className="text-xs font-mono leading-relaxed">
+                        <div><span className="text-purple-400">values</span>:{'  '}<span className="text-[10px] text-amber-400 font-semibold">guessed</span></div>
+                        <div className="pl-2"><span className="text-amber-300">- &apos;Standard&apos;</span></div>
+                        <div className="pl-2"><span className="text-amber-300">- &apos;Express&apos;</span></div>
+                        <div className="pl-2"><span className="text-amber-300">- &apos;Two-Day&apos;</span></div>
+                        <div className="pl-2"><span className="text-amber-300">- &apos;Overnight&apos;</span></div>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
               )}
-              {s.type === 'skill' && (
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-indigo-400" />
-                  <span className="text-xs text-indigo-300 font-mono">{s.text}</span>
-                </div>
+              {/* Step 3: Failure */}
+              {step >= 3 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-red-700/50 bg-red-900/20 p-4">
+                  <p className="text-sm font-bold text-red-400 mb-1">&#x2717; accepted_values test on ship_mode FAILED</p>
+                  <p className="text-xs text-red-400/70">6,012 rows with unexpected values. The real column contains completely different values.</p>
+                </motion.div>
               )}
-              {s.type === 'context' && (
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-400" />
-                  <span className="text-xs text-blue-300 font-mono">{s.text}</span>
-                </div>
+            </>
+          ) : (
+            <>
+              {/* Step 1: Query */}
+              {step >= 1 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-slate-700 bg-slate-800 p-4">
+                  <p className="text-sm font-semibold text-slate-200 mb-2">Queries the column&apos;s real values</p>
+                  <div className="text-xs font-mono text-slate-400 bg-slate-900 rounded-lg p-3">
+                    select ship_mode, count(*) from {'{{ ref(\'stg_orders\') }}'} group by 1 order by 2 desc
+                  </div>
+                </motion.div>
               )}
-              {s.type === 'output' && (
-                <pre className="text-[10px] font-mono text-slate-300 bg-slate-800 rounded-lg p-3 whitespace-pre-wrap leading-relaxed">{s.text}</pre>
+              {/* Step 2: Results table (clean rows only) */}
+              {step >= 2 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-slate-700 bg-slate-800 p-4">
+                  <table className="w-full text-xs font-mono">
+                    <thead>
+                      <tr className="text-slate-500 border-b border-slate-700">
+                        <th className="text-left py-1.5 font-semibold">SHIP_MODE</th>
+                        <th className="text-right py-1.5 font-semibold">COUNT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { val: 'TRUCK', count: '142,310' },
+                        { val: 'MAIL', count: '98,442' },
+                        { val: 'AIR', count: '61,003' },
+                      ].map(r => (
+                        <tr key={r.val} className="border-b border-slate-700/50 text-slate-300">
+                          <td className="py-1.5">{r.val}</td>
+                          <td className="text-right py-1.5">{r.count}</td>
+                        </tr>
+                      ))}
+                      {/* air row: always visible in step 2, highlighted in step 3 */}
+                      <tr>
+                        <td colSpan={2} className="py-0.5">
+                          {step < 3 ? (
+                            <div className="flex items-center justify-between px-2 py-1.5">
+                              <span className="text-slate-300">air</span>
+                              <span className="text-slate-300">421</span>
+                            </div>
+                          ) : (
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1, boxShadow: ['0 0 0px rgba(239,68,68,0)', '0 0 12px rgba(239,68,68,0.3)', '0 0 0px rgba(239,68,68,0)'] }}
+                              transition={{ opacity: { duration: 0.3 }, boxShadow: { duration: 2, repeat: Infinity } }}
+                              className="flex items-center justify-between rounded-lg px-2 py-1.5 bg-red-500/10 border border-red-500/30"
+                            >
+                              <span className="text-red-400 font-semibold">air</span>
+                              <span className="text-red-400">421<span className="text-[10px] text-red-500/70 ml-2">← inconsistent casing</span></span>
+                            </motion.div>
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </motion.div>
               )}
-              {s.type === 'issue' && (
-                <div className="flex items-start gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
-                  <span className="text-red-400 text-xs mt-0.5">&#x2717;</span>
-                  <span className="text-xs text-red-300">{s.text}</span>
-                </div>
+              {/* Step 4: Fix SQL */}
+              {step >= 4 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-slate-700 bg-slate-800 p-4">
+                  <p className="text-sm font-semibold text-slate-200 mb-2">Fixes the inconsistency in the model SQL</p>
+                  <div className="rounded-lg overflow-hidden border border-slate-700">
+                    <div className="bg-red-900/30 px-3 py-1.5 text-xs font-mono text-red-400 border-b border-slate-700">
+                      <span className="text-red-500 mr-1">&minus;</span> ship_mode
+                    </div>
+                    <div className="bg-emerald-900/30 px-3 py-1.5 text-xs font-mono text-emerald-400">
+                      <span className="text-emerald-500 mr-1">+</span> upper(trim(ship_mode)) as ship_mode
+                    </div>
+                  </div>
+                </motion.div>
               )}
-              {s.type === 'success' && (
-                <div className="flex items-start gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                  <span className="text-emerald-400 text-xs mt-0.5">&#x2713;</span>
-                  <span className="text-xs text-emerald-300">{s.text}</span>
-                </div>
+              {/* Step 5: Confirmed YAML */}
+              {step >= 5 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-slate-700 bg-slate-800 p-4">
+                  <p className="text-sm font-semibold text-slate-200 mb-3">Writes the accepted_values test</p>
+                  <div className="text-xs font-mono leading-relaxed text-slate-400">
+                    <div><span className="text-purple-400">columns</span>:</div>
+                    <div className="pl-2">- <span className="text-purple-400">name</span>: <span className="text-blue-400">ship_mode</span></div>
+                    <div className="pl-4"><span className="text-purple-400">data_tests</span>:</div>
+                    <div className="pl-4">- <span className="text-purple-400">accepted_values</span>:</div>
+                  </div>
+                  <div className="mt-1 bg-emerald-900/30 border border-emerald-700/50 rounded-lg p-2.5">
+                    <div className="text-xs font-mono leading-relaxed">
+                      <div><span className="text-purple-400">values</span>:{'  '}<span className="text-[10px] text-emerald-400 font-semibold">confirmed from data</span></div>
+                      <div className="pl-2"><span className="text-emerald-300">- &apos;TRUCK&apos;</span></div>
+                      <div className="pl-2"><span className="text-emerald-300">- &apos;MAIL&apos;</span></div>
+                      <div className="pl-2"><span className="text-emerald-300">- &apos;AIR&apos;</span></div>
+                    </div>
+                  </div>
+                </motion.div>
               )}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+              {/* Step 6: Success */}
+              {step >= 6 && (
+                <motion.div {...cardAnim} className="rounded-xl border border-emerald-700/50 bg-emerald-900/20 p-4">
+                  <p className="text-sm font-bold text-emerald-400 mb-1">&#x2713; Test passes</p>
+                  <p className="text-xs text-emerald-400/70">All 3 values confirmed from actual data. Inconsistency fixed at the source.</p>
+                </motion.div>
+              )}
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -477,7 +555,7 @@ export default function Tab06AI() {
       <div className="section-container mb-8">
         <div className="flex items-center gap-3 mb-2">
           <span className="text-sm font-bold text-white bg-gray-900 px-3 py-1 rounded-full">06</span>
-          <h2 className="text-2xl font-bold text-gray-900">AI And The Stack</h2>
+          <h2 className="text-2xl font-bold text-gray-900">AI</h2>
         </div>
         <p className="text-sm text-gray-500">
           AI is a tool across the data lifecycle, with real upside and real risk at every stage.
